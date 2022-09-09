@@ -1,0 +1,25 @@
+tesla_revenue = pd.DataFrame(columns=["Date", "Revenue"])
+
+# First we isolate the body of the table which contains all the information
+# Then we loop through each row and find all the column values for each row
+for row in soup.find("tbody").find_all('tr'):
+    col = row.find_all('td')
+    date = col[0].text
+    revenue = col[1].text
+    
+    # Finally we append the data of each row to the table
+    tesla_revenue = tesla_revenue.append({"Date":date, "Revenue":revenue}, ignore_index=True)  
+
+
+read_html_pandas_data = pd.read_html(url)
+read_html_pandas_data = pd.read_html(str(soup))
+
+tesla_revenue = read_html_pandas_data[1]
+
+
+
+gme_revenue["GameStop Quarterly Revenue(Millions of US $).1"] = gme_revenue['GameStop Quarterly Revenue(Millions of US $).1'].str.replace(',|\$',"")
+
+gme_revenue.dropna(inplace=True)
+
+gme_revenue = gme_revenue[gme_revenue['GameStop Quarterly Revenue(Millions of US $).1'] != ""]
